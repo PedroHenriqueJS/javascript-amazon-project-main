@@ -1,4 +1,4 @@
-import { cart, addToCart } from '../data/cart.js'
+import { cart, addToCart, calculateCartQuantity } from '../data/cart.js'
 import { products } from '../data/products.js'
 import { formatCurrency } from './utils/money.js'
 let productsHTML = ''
@@ -67,23 +67,13 @@ addToCartBt.forEach((button) => {
   button.addEventListener('click', () => {
     const { productId } = button.dataset
     addToCart(productId)
-    updateCartQuantity()
+    calculateCartQuantity()
     showAddedMessage(addedMessageTimeoutId, productId)
 
     })
 })
 
-
-
-function updateCartQuantity(){
-    let cartQty = 0
-
-    cart.forEach((cartItem) => {
-        cartQty += cartItem.quantity
-    })
-
-    document.querySelector('.js-cart-quantity').textContent = cartQty
-}
+calculateCartQuantity();
 
 function showAddedMessage(addedMessageTimeoutId, productId){
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
@@ -100,3 +90,4 @@ function showAddedMessage(addedMessageTimeoutId, productId){
   addedMessageTimeoutId = timeoutId;
 
 }
+
