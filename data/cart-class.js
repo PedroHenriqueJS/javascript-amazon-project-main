@@ -1,18 +1,20 @@
 // MODEL
 
 class Cart {
-    cartItems = undefined
-    localStorage = undefined
+    //public property
+    cartItems
+    //private property
+    #localStorageKey
 
     constructor(localStorageKey) {
-        this.localStorageKey = localStorageKey
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey
+        this.#loadFromStorage()
 
 
     }
 
-    loadFromStorage() {
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    #loadFromStorage() {
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey))
         
         if (!this.cartItems) {
             this.cartItems = [
@@ -26,98 +28,98 @@ class Cart {
                     quantity: 1,
                     deliveryOptionId: '2',
                 },
-            ];
+            ]
         }
     }
 
     saveStorage() {
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems))
     }
 
     calculateCartQuantity() {
-        let cartQty = 0;
+        let cartQty = 0
       
         this.cartItems.forEach((cartItem) => {
-            cartQty += cartItem.quantity;
-        });
+            cartQty += cartItem.quantity
+        })
       
-        const cartQuantityElement = document.querySelector('.js-cart-quantity');
-        const countQuantityElement = document.querySelector('.js-count-quantity');
+        const cartQuantityElement = document.querySelector('.js-cart-quantity')
+        const countQuantityElement = document.querySelector('.js-count-quantity')
       
         if (cartQuantityElement) {
-            cartQuantityElement.textContent = cartQty;
+            cartQuantityElement.textContent = cartQty
         }
       
         if (countQuantityElement) {
-            countQuantityElement.textContent = `${cartQty} Items`;
+            countQuantityElement.textContent = `${cartQty} Items`
         }
     }
 
     addToCart(productId) {
-        let matchingItem;
+        let matchingItem
       
         this.cartItems.forEach((cartItem) => {
             if (productId === cartItem.productId) {
-                matchingItem = cartItem;
+                matchingItem = cartItem
             }
-        });
+        })
       
         if (matchingItem) {
-            matchingItem.quantity += 1;
+            matchingItem.quantity += 1
         } else {
             this.cartItems.push({
                 productId: productId,
                 quantity: 1,
                 deliveryOptionId: '1',
-            });
+            })
         }
       
-        this.saveStorage();
+        this.saveStorage()
     }
 
     removeFromCart(productId) {
-        const newCart = [];
+        const newCart = []
       
         this.cartItems.forEach((cartItem) => {
             if (cartItem.productId !== productId) {
-                newCart.push(cartItem);
+                newCart.push(cartItem)
             }
-        });
+        })
       
-        this.cartItems = newCart;
-      
-        this.saveStorage();
+        this.cartItems = newCart
+    
+        this.saveStorage()
     }
 
     updateQuantity(productId, newQuantity) {
-        let matchingItem;
+        let matchingItem
         this.cartItems.forEach((cartItem) => {
             if (productId === cartItem.productId) {
-                matchingItem = cartItem;
+                matchingItem = cartItem
             }
-        });
-        matchingItem.quantity = newQuantity;
-        this.saveStorage();
+        })
+        matchingItem.quantity = newQuantity
+        this.saveStorage()
     }
 
     updateDeliveryOption(productId, deliveryOptionId) {
-        let matchingItem;
+        let matchingItem
         
         this.cartItems.forEach((cartItem) => {
             if (productId === cartItem.productId) {
-                matchingItem = cartItem;
+                matchingItem = cartItem
             }
-        });
+        })
       
-        matchingItem.deliveryOptionId = deliveryOptionId;
+        matchingItem.deliveryOptionId = deliveryOptionId
       
-        this.saveStorage();
+        this.saveStorage()
     }
 
 }
 
 
-const cart = new Cart('cart-oop');
+const cart = new Cart('cart-oop')
 const businessCart = new Cart('cart-business')
 
 
